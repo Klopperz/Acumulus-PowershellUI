@@ -414,6 +414,53 @@ param(  [parameter(Mandatory=$true)][System.Int32]$x,
     return $oNewListBox
 }
 
+function New-Formlistview
+{
+param(  [parameter(Mandatory=$true)][System.Int32]$x,
+        [parameter(Mandatory=$true)][System.Int32]$y,
+        [parameter(Mandatory=$true)][System.Int32]$width,
+        [parameter(Mandatory=$true)][System.Int32]$height,
+        [parameter(Mandatory=$true)]$ParentObject,
+        [parameter(Mandatory=$false)][System.String]$AltText,
+        [parameter(Mandatory=$false)][Switch]$Disabled,
+        [parameter(Mandatory=$false)][System.String]$backgroundcolor,
+        [parameter(Mandatory=$false)][ScriptBlock]$onclickscript,
+        [parameter(Mandatory=$false)][System.String]$Text,
+        [parameter(Mandatory=$false)][System.String][ValidateSet("Details", "LargeIcon" ,"List","SmallIcon","Tile")]$View )
+
+    [System.Windows.Forms.ListView]$oNewListView = New-Object System.Windows.Forms.ListView
+    $oNewListView.Location = New-Object System.Drawing.Size($x,$y)
+    $oNewListView.Size = New-Object System.Drawing.Size($width,$height)
+    if (!([String]::IsNullOrEmpty($backgroundcolor)))
+    {
+        $oNewListView.BackColor = $backgroundcolor
+    }
+    if ($Disabled)
+    {
+        $oNewListView.Enabled = $false
+    }
+    if (!([System.string]::IsNullOrEmpty($AltText)))
+    {
+        [System.Windows.Forms.ToolTip] $Tooltip = New-Object System.Windows.Forms.ToolTip
+        $Tooltip.setToolTip($oNewListView,$AltText)
+    }
+    if ([System.string]::IsNullOrEmpty($Text))
+    {
+        $oNewListView.Text = $Text
+    }
+    if ($onclickscript)
+    {
+        $oNewListView.FullRowSelect = $true
+        $oNewListView.Add_MouseClick($onclickscript)
+    }
+    if ($View)
+    {
+        $oNewListView.View = $View
+    }
+    $ParentObject.Controls.Add($oNewListView)
+    return $oNewListView
+}
+
 function New-Formpanel
 {
 param(  [parameter(Mandatory=$true)][System.Int32]$x,
