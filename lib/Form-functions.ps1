@@ -54,12 +54,22 @@ param(  [parameter(Mandatory=$true)][System.Int32]$width,
         [parameter(Mandatory=$true)][ValidateSet("Fixed3D", "FixedDialog" ,"FixedSingle", "FixedToolWindow","None","Sizable","SizableToolWindow")][System.String]$borderstyle,
         [parameter(Mandatory=$false)][System.String]$backgroundcolor =  "#ffffff",
         [parameter(Mandatory=$false)][System.String]$icon,
+        [parameter(Mandatory=$false)][Switch]$hide_controlbox,
+        [parameter(Mandatory=$false)][Switch]$hide_minimizebox,
         [parameter(Mandatory=$false)][Switch]$hide_maximizebox)
     [System.Windows.Forms.Form]$oForm = New-Object System.Windows.Forms.Form
     $oForm.Text = $header
     $oForm.Width = $width
     $oForm.Height = $height
     $oForm.SizeGripStyle = "Hide"
+    if ($hide_controlbox)
+    {
+        $oForm.ControlBox = $false
+    }
+    if ($hide_minimizebox)
+    {
+        $oForm.MinimizeBox = $false
+    }
     if ($hide_maximizebox)
     {
         $oForm.MaximizeBox = $false
