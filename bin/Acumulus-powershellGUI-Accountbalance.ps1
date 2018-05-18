@@ -1,3 +1,10 @@
+[scriptblock]$sbAccountbalanceChangeYearAdd = {
+    $txtAccountbalanceYear.text = (get-date "1/1/$($txtAccountbalanceYear.text)").addYears(1).ToString("yyyy"); Invoke-Command $sbAccountbalanceRefresh
+}
+
+[scriptblock]$sbAccountbalanceChangeYearRemove = {
+    $txtAccountbalanceYear.text = (get-date "1/1/$($txtAccountbalanceYear.text)").addYears(-1).ToString("yyyy"); Invoke-Command $sbAccountbalanceRefresh
+}
 
 [scriptblock]$sbAccountbalanceRefresh = {
     $lvAccountbalance.Items.Clear()
@@ -10,7 +17,3 @@
         $lvAccountbalance.Items.Add($lviAccountbalance)                       | Out-Null
     }
 }
-
-
-
-

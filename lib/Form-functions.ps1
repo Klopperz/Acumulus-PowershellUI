@@ -127,6 +127,7 @@ param(  [parameter(Mandatory=$true)][System.Int32]$x,
     [parameter(Mandatory=$true)][System.Int32]$height,
     [parameter(Mandatory=$true)]$ParentObject,
     [parameter(Mandatory=$false)][System.String]$backgroundcolor,
+    [parameter(Mandatory=$false)][DateTime[]]$bolteddates,
     [parameter(Mandatory=$false)][Switch]$Disabled,
     [parameter(Mandatory=$false)][System.Int32]$MaxSelectionCount=1,
     [parameter(Mandatory=$false)][Switch]$ShowTodayCircle
@@ -134,9 +135,13 @@ param(  [parameter(Mandatory=$true)][System.Int32]$x,
     [System.Windows.Forms.MonthCalendar]$oMonthCalendar = New-Object System.Windows.Forms.MonthCalendar
     $oMonthCalendar.Location = New-Object System.Drawing.Size($x,$y)
     $oMonthCalendar.Size = New-Object System.Drawing.Size($width,$height)
+    $oMonthCalendar.date
     $ParentObject.Controls.Add($oMonthCalendar)
     if( $backgroundcolor ) {
         $oMonthCalendar.BackColor = $backgroundcolor
+    }
+    if ($bolteddates) {
+        $oMonthCalendar.BoldedDates = $bolteddates
     }
     if ($ShowTodayCircle) {
         $oMonthCalendar.ShowTodayCircle = $true
@@ -145,6 +150,7 @@ param(  [parameter(Mandatory=$true)][System.Int32]$x,
     if ($Disabled) {
         $oMonthCalendar.Enabled = $false
     }
+    return $oMonthCalendar
 }
 
 function New-Formcheckbox

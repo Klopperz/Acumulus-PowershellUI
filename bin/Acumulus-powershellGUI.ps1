@@ -6,7 +6,7 @@ param (
     [Parameter(Mandatory=$false)]                                                          [switch]$testmode
 )
 
-[System.String]$sScript_Version         = "0.3"
+[System.String]$sScript_Version         = "0.4"
 [System.String]$sScript_Name            = "Acumulus-powershellGUI"
 [System.String]$sUser                   = $env:username
 [System.String]$sFolder_Root            = (Get-Item $PSScriptRoot).parent.FullName
@@ -33,15 +33,12 @@ param (
 [System.String]$sFile_ico               = $($htScript_config["Files"]["ico"]).Replace("%SVR%",$sFolder_Srv)
 [System.String]$sFile_usersettings      = $($htScript_config["Files"]["usersettings"]).Replace("%USERHOME%",$sFolder_User)
 
-if ((-not(Test-Path $sFile_usersettings)) -or $contractcode -or $username)
-{
+if ((-not(Test-Path $sFile_usersettings)) -or $contractcode -or $username) {
     Start-Authenticationbox -userparamfile $sFile_usersettings -contractcode $contractcode -username $username -emailonerror $emailonerror
 }
 [Hashtable]$htScript_config             = Get-IniContent $sFile_usersettings
 
-if (-not($SecurePassword))
-{
-    
+if (-not($SecurePassword)) {
     $SecurePassword = (Get-Credential -Message "Acumulus login" -UserName "$($htScript_config["Authenticationparams"]["username"])\$($htScript_config["Authenticationparams"]["contractcode"])").Password
 }
 $password = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecurePassword))
