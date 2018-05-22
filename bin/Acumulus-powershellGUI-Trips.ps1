@@ -102,11 +102,11 @@
     $acTrips = Get-ReportTripCompensations -AcumulusAuthentication $authAcumulus -year $($txtTripYear.Text)
     foreach($acTrip in $acTrips) {
         $lviTripitem = New-Object System.Windows.Forms.ListViewItem($acTrip.entryid)
-        $lviTripitem.SubItems.Add($acTrip.tripcompensationdate)         | Out-Null
-        $lviTripitem.SubItems.Add($acTrip.tripcompensationkm)           | Out-Null
-        $lviTripitem.SubItems.Add($acTrip.tripcompensationamount)       | Out-Null
-        $lviTripitem.SubItems.Add($acTrip.tripcompensationdescription)  | Out-Null
-        $lvTrips.Items.Add($lviTripitem)                                | Out-Null
+        $lviTripitem.SubItems.Add([Convert]::toString($acTrip.tripcompensationdate))         | Out-Null
+        $lviTripitem.SubItems.Add([Convert]::toString($acTrip.tripcompensationkm))           | Out-Null
+        $lviTripitem.SubItems.Add([Convert]::toString($acTrip.tripcompensationamount))       | Out-Null
+        $lviTripitem.SubItems.Add([Convert]::toString($acTrip.tripcompensationdescription))  | Out-Null
+        $lvTrips.Items.Add($lviTripitem)                                                     | Out-Null
     }      
 }
 
