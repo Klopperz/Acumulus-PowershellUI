@@ -251,3 +251,29 @@ param (
     $Response = $Response | ConvertFrom-Json
     return $Response.unpaidcreditorinvoices
 }
+
+Function Get-ReportUnpaidDebtors
+{
+param (
+    [Parameter(Mandatory=$true)]$AcumulusAuthentication,
+    [Parameter(Mandatory=$false)][string]$year = $((Get-date).tostring("yyyy")),
+    [Parameter(Mandatory=$false)][switch]$due
+)
+    [xml]$SubmitXML = Get-BasicSubmit -AcumulusAuthentication $AcumulusAuthentication
+    $NewXMLElement = $SubmitXML.CreateElement('year')
+    $SubmitXML.myxml.AppendChild($NewXMLElement) | out-null
+    $SubmitXML.myxml.year = $year
+    $NewXMLElement = $SubmitXML.CreateElement('due')
+    $SubmitXML.myxml.AppendChild($NewXMLElement) | out-null
+    if ($due)
+    {
+        $SubmitXML.myxml.due = "1"
+    }
+    else 
+    {
+        $SubmitXML.myxml.due = "0"
+    }
+    $Response = Invoke-WebRequest 'https://api.sielsystems.nl/acumulus/stable/reports/report_unpaid_debtors.php' -Body "xmlstring=$($SubmitXML.InnerXml)" -Method 'POST' 
+    $Response = $Response | ConvertFrom-Json
+    return $Response.unpaiddebtorinvoices
+}

@@ -136,7 +136,6 @@ param(  [parameter(Mandatory=$true)][System.Int32]$x,
     $oMonthCalendar.Location = New-Object System.Drawing.Size($x,$y)
     $oMonthCalendar.Size = New-Object System.Drawing.Size($width,$height)
     $oMonthCalendar.date
-    $ParentObject.Controls.Add($oMonthCalendar)
     if( $backgroundcolor ) {
         $oMonthCalendar.BackColor = $backgroundcolor
     }
@@ -150,6 +149,7 @@ param(  [parameter(Mandatory=$true)][System.Int32]$x,
     if ($Disabled) {
         $oMonthCalendar.Enabled = $false
     }
+    $ParentObject.Controls.Add($oMonthCalendar)
     return $oMonthCalendar
 }
 

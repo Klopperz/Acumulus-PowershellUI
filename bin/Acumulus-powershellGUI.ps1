@@ -6,7 +6,7 @@ param (
     [Parameter(Mandatory=$false)]                                                          [switch]$testmode
 )
 
-[System.String]$sScript_Version         = "0.4"
+[System.String]$sScript_Version         = "0.5"
 [System.String]$sScript_Name            = "Acumulus-powershellGUI"
 [System.String]$sUser                   = $env:username
 [System.String]$sFolder_Root            = (Get-Item $PSScriptRoot).parent.FullName
@@ -19,33 +19,44 @@ param (
 [System.String]$sFolder_User            = "$sFolder_Home\$sUser"
 [System.String]$sScript_Config          = "$sFolder_Etc\$sScript_Name.ini"
 [System.String]$sFile_Log               = "$sFolder_Log\$sScript_Name.log"
+[System.String]$sLanguage_string        = "Strings-$(([System.Threading.Thread]::CurrentThread.CurrentUICulture).Name.split("-")[0].toUpper())"
+if ("Strings-NL","Strings-EN" -notcontains $sLanguage_String )
+{
+    Exit
+}
 
 . $sFolder_Lib\AcumulusAPI-functions.ps1
 . $sFolder_Lib\Form-functions.ps1
 . $sFolder_Lib\Get-functions.ps1
 . $sFolder_Lib\Set-functions.ps1
 . $sFolder_Lib\New-functions.ps1
-. $sFolder_Bin\Acumulus-powershellGUI-Accountbalance.ps1
-. $sFolder_Bin\Acumulus-powershellGUI-Trips.ps1
-. $sFolder_Bin\Acumulus-powershellGUI-Main.ps1
 
 [Hashtable]$htScript_config             = Get-IniContent $sScript_Config
 [System.String]$sFile_ico               = $($htScript_config["Files"]["ico"]).Replace("%SVR%",$sFolder_Srv)
 [System.String]$sFile_usersettings      = $($htScript_config["Files"]["usersettings"]).Replace("%USERHOME%",$sFolder_User)
 
+. $sFolder_Bin\Acumulus-powershellGUI-Accountbalance.ps1
+. $sFolder_Bin\Acumulus-powershellGUI-Expense.ps1
+. $sFolder_Bin\Acumulus-powershellGUI-Trips.ps1
+. $sFolder_Bin\Acumulus-powershellGUI-UnpaidCreditors.ps1
+. $sFolder_Bin\Acumulus-powershellGUI-UnpaidDebtors.ps1
+. $sFolder_Bin\Acumulus-powershellGUI-Main.ps1
+
 if ((-not(Test-Path $sFile_usersettings)) -or $contractcode -or $username) {
     Start-Authenticationbox -userparamfile $sFile_usersettings -contractcode $contractcode -username $username -emailonerror $emailonerror
 }
-[Hashtable]$htScript_config             = Get-IniContent $sFile_usersettings
+[Hashtable]$htUser_config = Get-IniContent $sFile_usersettings
 
 if (-not($SecurePassword)) {
-    $SecurePassword = (Get-Credential -Message "Acumulus login" -UserName "$($htScript_config["Authenticationparams"]["username"])\$($htScript_config["Authenticationparams"]["contractcode"])").Password
+    $SecurePassword = (Get-Credential -Message "Acumulus login" -UserName "$($htUser_config["Authenticationparams"]["username"])\$($htUser_config["Authenticationparams"]["contractcode"])").Password
 }
 $password = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecurePassword))
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-$authAcumulus = Get-AuthenticationObject -contractcode $($htScript_config["Authenticationparams"]["contractcode"]) -username $($htScript_config["Authenticationparams"]["username"]) -password $password -emailonerror $($htScript_config["Authenticationparams"]["email"]) -testmode:$testmode
+$authAcumulus = Get-AuthenticationObject -contractcode $($htUser_config["Authenticationparams"]["contractcode"]) -username $($htUser_config["Authenticationparams"]["username"]) -password $password -emailonerror $($htUser_config["Authenticationparams"]["email"]) -testmode:$testmode
 
 Invoke-Command $sbTripRefresh
 Invoke-Command $sbAccountbalanceRefresh
+Invoke-Command $sbUnpaidCreditorsRefresh
+Invoke-Command $sbUnpaidDebtorsRefresh
 $frmMain.ShowDialog()

@@ -6,16 +6,16 @@
         $dtDatewithTrips += [datetime]::ParseExact($TripItems.SubItems[1].Text, "dd-MM-yyyy", $null)
     }
 
-    $frmTripAdd =           New-Form                 -width 360 -height 320 -header "AddTrip" -borderstyle FixedSingle -icon $sFile_ico -hide_maximizebox 
-                            New-Formlabel -x 1 -y 70 -width 100 -height 25  -ParentObject $frmTripAdd -Text "Datum:" | Out-Null
+    $frmTripAdd =           New-Form                 -width 360 -height 320 -header "Add trip" -borderstyle FixedSingle -icon $sFile_ico -hide_maximizebox 
+                            New-Formlabel -x 1 -y 70 -width 100 -height 25  -ParentObject $frmTripAdd -Text "Date:" | Out-Null
 
     $calTripSelection =     New-Formcalendar  -x 100 -y 1 -width 150 -height 150 -ParentObject $frmTripAdd -ShowTodayCircle -MaxSelectionCount 5 -bolteddates $dtDatewithTrips
 
-                            New-Formlabel   -x 1   -y 160 -width 100 -height 25 -ParentObject $frmTripAdd -Text "KM Heen:" | Out-Null
+                            New-Formlabel   -x 1   -y 160 -width 100 -height 25 -ParentObject $frmTripAdd -Text "KM To:" | Out-Null
     $txtAddTripTo =         New-Formtextbox -x 100 -y 160 -width 100 -height 25 -ParentObject $frmTripAdd 
-                            New-Formlabel   -x 1   -y 190 -width 100 -height 25 -ParentObject $frmTripAdd -Text "KM Terug:" | Out-Null
+                            New-Formlabel   -x 1   -y 190 -width 100 -height 25 -ParentObject $frmTripAdd -Text "KM Return:" | Out-Null
     $txtAddTripFrom =       New-Formtextbox -x 100 -y 190 -width 100 -height 25 -ParentObject $frmTripAdd 
-                            New-Formlabel   -x 1   -y 220 -width 100 -height 25 -ParentObject $frmTripAdd -Text "Omschrijving:" | Out-Null
+                            New-Formlabel   -x 1   -y 220 -width 100 -height 25 -ParentObject $frmTripAdd -Text "Description:" | Out-Null
     $txtAddTripDescription =New-Formtextbox -x 100 -y 220 -width 240 -height 25 -ParentObject $frmTripAdd 
                             New-Formbutton  -x 100 -y 250 -width 100 -height 25 -ParentObject $frmTripAdd -Text "Submit" -Script {
         $startDate = $calTripSelection.SelectionStart
