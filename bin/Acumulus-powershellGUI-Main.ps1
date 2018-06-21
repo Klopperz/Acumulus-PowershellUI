@@ -45,33 +45,27 @@ New-Formbutton  -x 1   -y 1 -width 20   -height 20  -ParentObject $tpAccountbala
                                                         New-Formbutton  -x 115 -y 1 -width 20   -height 20  -ParentObject $tpAccountbalance -Text ">" -Script $sbAccountbalanceChangeYearAdd | Out-null
                                                         New-Formbutton  -x 140 -y 1 -width 200  -height 20  -ParentObject $tpAccountbalance -Script $sbAccountbalanceRefresh -Text "Refresh" | Out-null
 [System.Windows.Forms.ListView]$lvAccountbalance =      New-Formlistview -x 1  -y 25 -width 977 -height 709 -ParentObject $tpAccountbalance -view "Details"
-$lvAccountbalance.columns.Add("accountid")     | Out-Null
-$lvAccountbalance.columns.Add("number")      | Out-Null
-$lvAccountbalance.columns.Add("balance")     | Out-Null
-$lvAccountbalance.columns.Add("description") | Out-Null
-$lvAccountbalance.columns[0].Width = 0
-$lvAccountbalance.columns[1].Width = 200
-$lvAccountbalance.columns[2].Width = 100
-$lvAccountbalance.columns[3].Width = 600
+                                                        Add-ListviewColumn -oListView $lvAccountbalance  -Text "accountid"     -Hide        -Silence
+                                                        Add-ListviewColumn -oListView $lvAccountbalance  -Text "number"        -Width 200   -Silence
+                                                        Add-ListviewColumn -oListView $lvAccountbalance  -Text "balance"       -Width 100   -Silence
+                                                        Add-ListviewColumn -oListView $lvAccountbalance  -Text "description"   -Width 600   -Silence
 
 #tpExpense
 New-Formbutton  -x 1 -y 1 -width 200  -height 20  -ParentObject $tpExpense -Script $sbExpenseAdd -Text "Add Expense" -Disabled | Out-null
 
 #tpTrips
-                                             New-Formbutton  -x 1   -y 1 -width 20   -height 20  -ParentObject $tpTrips -Text "<" -Script $sbTripChangeYearRemove | Out-null
-[System.Windows.Forms.textbox]$txtTripYear = New-Formtextbox -x 20  -y 1 -width 95   -height 20  -ParentObject $tpTrips -Text $((get-date).ToString("yyyy")) -Disabled
-                                             New-Formbutton  -x 115 -y 1 -width 20   -height 20  -ParentObject $tpTrips -Text ">" -Script $sbTripChangeYearAdd | Out-null
-                                             New-Formbutton  -x 140 -y 1 -width 200  -height 20  -ParentObject $tpTrips -Script $sbTripRefresh -Text "Refresh" | Out-null
-                                             New-Formbutton  -x 342 -y 1 -width 200  -height 20  -ParentObject $tpTrips -Script $sbTripAdd -Text "Add trip" | Out-null
-[System.Windows.Forms.ListView]$lvTrips =    New-Formlistview -x 1  -y 25 -width 977 -height 709 -ParentObject $tpTrips -view "Details" -onclickscript $sbTripEdit
-$lvTrips.columns.Add("entryid")     | Out-Null
-$lvTrips.columns.Add("date")        | Out-Null
-$lvTrips.columns.Add("km")          | Out-Null
-$lvTrips.columns.Add("Amount")      | Out-Null
-$lvTrips.columns.Add("description") | Out-Null
-$lvTrips.columns[0].Width = 0
-$lvTrips.columns[1].Width = 100
-$lvTrips.columns[4].Width = 600
+                                                New-Formbutton  -x 1   -y 1 -width 20   -height 20  -ParentObject $tpTrips  -Text "<" -Script $sbTripChangeYearRemove | Out-null
+[System.Windows.Forms.textbox]$txtTripYear =    New-Formtextbox -x 20  -y 1 -width 95   -height 20  -ParentObject $tpTrips  -Text $((get-date).ToString("yyyy")) -Disabled
+                                                New-Formbutton  -x 115 -y 1 -width 20   -height 20  -ParentObject $tpTrips  -Text ">" -Script $sbTripChangeYearAdd | Out-null
+                                                New-Formbutton  -x 140 -y 1 -width 200  -height 20  -ParentObject $tpTrips  -Script $sbTripRefresh -Text "Refresh" | Out-null
+                                                New-Formbutton  -x 342 -y 1 -width 200  -height 20  -ParentObject $tpTrips  -Script $sbTripAdd -Text "Add trip" | Out-null
+[System.Windows.Forms.ListView]$lvTrips =       New-Formlistview -x 1  -y 25 -width 977 -height 709 -ParentObject $tpTrips  -view "Details" -onclickscript $sbTripEdit
+                                                Add-ListviewColumn -oListView $lvTrips  -Text "entryid"     -Hide           -Silence
+                                                Add-ListviewColumn -oListView $lvTrips  -Text "date"        -Width 100      -Silence
+                                                Add-ListviewColumn -oListView $lvTrips  -Text "km"                          -Silence
+                                                Add-ListviewColumn -oListView $lvTrips  -Text "Amount"                      -Silence
+                                                Add-ListviewColumn -oListView $lvTrips  -Text "description" -Width 600      -Silence
+
 
 #tpUnpaidCreditors
                                                         New-Formbutton  -x 1   -y 1 -width 20   -height 20  -ParentObject $tpUnpaidCreditors -Text "<" -Script $sbUnpaidCreditorsChangeYearRemove | Out-null
