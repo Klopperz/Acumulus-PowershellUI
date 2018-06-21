@@ -4,6 +4,31 @@ param(  [parameter(Mandatory=$true)][System.Windows.Forms.ListBox]$oListbox,
         [parameter(Mandatory=$true)][System.String]$Text)
     $oListbox.Items.Add($Text)
 }
+function Add-ListviewColumn
+{
+param(  [parameter(Mandatory=$true)][System.Windows.Forms.ListView]$oListView,
+        [parameter(Mandatory=$true)][System.String]$Text,
+        [parameter(Mandatory=$false)][Int]$Width,
+        [parameter(Mandatory=$false)][Switch]$Hide,
+        [parameter(Mandatory=$false)][Alias("Silence","Silent")][Switch]$OutNULL)
+    [ColumnHeader]$oListViewColumn = $oListView.columns.Add($Text)
+    if ($Width)
+    {
+        $oListView.columns[$($oListViewColumn.Index)].Width = $Width
+    }
+    if ($Hide)
+    {
+        $oListView.columns[$($oListViewColumn.Index)].Width = 0
+    }
+    if ($OutNULL)
+    {
+        return $null
+    }
+    else
+    {
+        return $oListViewColumn
+    }
+}
 
 function Add-ComboboxItem
 {

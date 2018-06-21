@@ -6,7 +6,7 @@ param (
     [Parameter(Mandatory=$false)]                                                          [switch]$testmode
 )
 
-[System.String]$sScript_Version         = "0.5"
+[System.String]$sScript_Version         = "0.6"
 [System.String]$sScript_Name            = "Acumulus-powershellGUI"
 [System.String]$sUser                   = $env:username
 [System.String]$sFolder_Root            = (Get-Item $PSScriptRoot).parent.FullName

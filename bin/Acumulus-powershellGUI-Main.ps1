@@ -79,10 +79,12 @@ $lvTrips.columns[4].Width = 600
                                                         New-Formbutton  -x 115 -y 1 -width 20   -height 20  -ParentObject $tpUnpaidCreditors -Text ">" -Script $sbUnpaidCreditorsChangeYearAdd | Out-null
                                                         New-Formbutton  -x 140 -y 1 -width 200  -height 20  -ParentObject $tpUnpaidCreditors -Script $sbUnpaidCreditorsRefresh -Text "Refresh" | Out-null
 [System.Windows.Forms.ListView]$lvUnpaidCreditors =     New-Formlistview -x 1  -y 25 -width 977 -height 709 -ParentObject $tpUnpaidCreditors -view "Details"
-$lvUnpaidCreditors.columns.Add("numberunpaidcreditors") | Out-Null
-$lvUnpaidCreditors.columns.Add("amountunpaidcreditors") | Out-Null
-$lvUnpaidCreditors.columns[0].Width = 150
-$lvUnpaidCreditors.columns[1].Width = 150
+                                                        Add-ListviewColumn -oListView $lvUnpaidCreditors -Text "entryid"        -Hide       -Silence
+                                                        Add-ListviewColumn -oListView $lvUnpaidCreditors -Text "issuedate"      -Width 75   -Silence
+                                                        Add-ListviewColumn -oListView $lvUnpaidCreditors -Text "contactname"    -Width 250  -Silence
+                                                        Add-ListviewColumn -oListView $lvUnpaidCreditors -Text "accountnumber"  -Width 150  -Silence
+                                                        Add-ListviewColumn -oListView $lvUnpaidCreditors -Text "amount"         -Width 60   -Silence
+
 
 #tpUnpaidDebtors
                                                         New-Formbutton  -x 1   -y 1 -width 20   -height 20  -ParentObject $tpUnpaidDebtors -Text "<" -Script $sbUnpaidDebtorsChangeYearRemove | Out-null
@@ -90,11 +92,12 @@ $lvUnpaidCreditors.columns[1].Width = 150
                                                         New-Formbutton  -x 115 -y 1 -width 20   -height 20  -ParentObject $tpUnpaidDebtors -Text ">" -Script $sbUnpaidDebtorsChangeYearAdd | Out-null
                                                         New-Formbutton  -x 140 -y 1 -width 200  -height 20  -ParentObject $tpUnpaidDebtors -Script $sbUnpaidDebtorsRefresh -Text "Refresh" | Out-null
 [System.Windows.Forms.ListView]$lvUnpaidDebtors =       New-Formlistview -x 1  -y 25 -width 977 -height 709 -ParentObject $tpUnpaidDebtors -view "Details"
-$lvUnpaidDebtors.columns.Add("numberunpaiddebtors")     | Out-Null
-$lvUnpaidDebtors.columns.Add("amountunpaiddebtors")     | Out-Null
-$lvUnpaidDebtors.columns.Add("numberoverduedebtors")    | Out-Null
-$lvUnpaidDebtors.columns.Add("amountoverduedebtors")    | Out-Null
-$lvUnpaidDebtors.columns[0].Width = 150
-$lvUnpaidDebtors.columns[1].Width = 150
-$lvUnpaidDebtors.columns[2].Width = 150
-$lvUnpaidDebtors.columns[3].Width = 150
+                                                        Add-ListviewColumn -oListView $lvUnpaidDebtors  -Text "entryid"        -Hide       -Silence
+                                                        Add-ListviewColumn -oListView $lvUnpaidDebtors  -Text "number"         -Width 75   -Silence
+                                                        Add-ListviewColumn -oListView $lvUnpaidDebtors  -Text "issuedate"      -Width 100  -Silence
+                                                        Add-ListviewColumn -oListView $lvUnpaidDebtors  -Text "expirationdate" -Width 100  -Silence
+                                                        Add-ListviewColumn -oListView $lvUnpaidDebtors  -Text "daysdue"        -Width 50   -Silence
+                                                        Add-ListviewColumn -oListView $lvUnpaidDebtors  -Text "invoicedaylimit"-Width 80   -Silence
+                                                        Add-ListviewColumn -oListView $lvUnpaidDebtors  -Text "contactname"    -Width 250  -Silence
+                                                        Add-ListviewColumn -oListView $lvUnpaidDebtors  -Text "accountnumber"  -Width 150  -Silence
+                                                        Add-ListviewColumn -oListView $lvUnpaidDebtors  -Text "amount"         -Width 60   -Silence

@@ -9,9 +9,12 @@
 [scriptblock]$sbUnpaidCreditorsRefresh = {
     $lvUnpaidCreditors.Items.Clear()
     $acUnpaidCreditors = Get-ReportUnpaidCreditors -AcumulusAuthentication $authAcumulus -year $($txtUnpaidCreditorsYear.Text)
-    foreach($acUnpaidCreditor in $acUnpaidCreditors) {
-        $lviUnpaidCreditoritem = New-Object System.Windows.Forms.ListViewItem($acUnpaidCreditor.numberunpaidcreditors)
-        $lviUnpaidCreditoritem.SubItems.Add([Convert]::toString($acUnpaidCreditor.numberunpaidcreditors))  | Out-Null
-        $lvUnpaidCreditors.Items.Add($lviUnpaidCreditoritem)                                               | Out-Null
+    foreach($acUnpaidCreditorEntry in $acUnpaidCreditors.entry) {
+        $lviUnpaidCreditoritem = New-Object System.Windows.Forms.ListViewItem($acUnpaidCreditorEntry.entryid)
+        $lviUnpaidCreditoritem.SubItems.Add([Convert]::toString($acUnpaidCreditorEntry.issuedate))          | Out-Null
+        $lviUnpaidCreditoritem.SubItems.Add([Convert]::toString($acUnpaidCreditorEntry.contactname))        | Out-Null
+        $lviUnpaidCreditoritem.SubItems.Add([Convert]::toString($acUnpaidCreditorEntry.accountnumber))      | Out-Null
+        $lviUnpaidCreditoritem.SubItems.Add([Convert]::toString($acUnpaidCreditorEntry.amount))             | Out-Null
+        $lvUnpaidCreditors.Items.Add($lviUnpaidCreditoritem)                                                | Out-Null
     }  
 }
