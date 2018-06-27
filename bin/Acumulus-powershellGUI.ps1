@@ -6,7 +6,7 @@ param (
     [Parameter(Mandatory=$false)]                                                          [switch]$testmode
 )
 
-[System.String]$sScript_Version         = "0.7"
+[System.String]$sScript_Version         = "0.8"
 [System.String]$sScript_Name            = "Acumulus-powershellGUI"
 [System.String]$sUser                   = $env:username
 [System.String]$sFolder_Root            = (Get-Item $PSScriptRoot).parent.FullName
@@ -36,6 +36,7 @@ if ("Strings-NL","Strings-EN" -notcontains $sLanguage_String )
 [System.String]$sFile_usersettings      = $($htScript_config["Files"]["usersettings"]).Replace("%USERHOME%",$sFolder_User)
 
 . $sFolder_Bin\Acumulus-powershellGUI-Accountbalance.ps1
+. $sFolder_Bin\Acumulus-powershellGUI-Entry.ps1
 . $sFolder_Bin\Acumulus-powershellGUI-Expense.ps1
 . $sFolder_Bin\Acumulus-powershellGUI-Trips.ps1
 . $sFolder_Bin\Acumulus-powershellGUI-UnpaidCreditors.ps1

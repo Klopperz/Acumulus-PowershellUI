@@ -72,7 +72,7 @@ New-Formbutton  -x 1 -y 1 -width 200  -height 20  -ParentObject $tpExpense -Scri
 [System.Windows.Forms.textbox]$txtUnpaidCreditorsYear = New-Formtextbox -x 20  -y 1 -width 95   -height 20  -ParentObject $tpUnpaidCreditors -Text $((get-date).ToString("yyyy")) -Disabled
                                                         New-Formbutton  -x 115 -y 1 -width 20   -height 20  -ParentObject $tpUnpaidCreditors -Text ">" -Script $sbUnpaidCreditorsChangeYearAdd | Out-null
                                                         New-Formbutton  -x 140 -y 1 -width 200  -height 20  -ParentObject $tpUnpaidCreditors -Script $sbUnpaidCreditorsRefresh -Text "Refresh" | Out-null
-[System.Windows.Forms.ListView]$lvUnpaidCreditors =     New-Formlistview -x 1  -y 25 -width 977 -height 709 -ParentObject $tpUnpaidCreditors -view "Details"
+[System.Windows.Forms.ListView]$lvUnpaidCreditors =     New-Formlistview -x 1  -y 25 -width 977 -height 709 -ParentObject $tpUnpaidCreditors -view "Details" -onclickscript $sbUnpaidCreditorsEdit
                                                         Add-ListviewColumn -oListView $lvUnpaidCreditors -Text "entryid"        -Hide       -Silence
                                                         Add-ListviewColumn -oListView $lvUnpaidCreditors -Text "issuedate"      -Width 75   -Silence
                                                         Add-ListviewColumn -oListView $lvUnpaidCreditors -Text "contactname"    -Width 250  -Silence
@@ -85,7 +85,7 @@ New-Formbutton  -x 1 -y 1 -width 200  -height 20  -ParentObject $tpExpense -Scri
 [System.Windows.Forms.textbox]$txtUnpaidDebtorsYear =   New-Formtextbox -x 20  -y 1 -width 95   -height 20  -ParentObject $tpUnpaidDebtors -Text $((get-date).ToString("yyyy")) -Disabled
                                                         New-Formbutton  -x 115 -y 1 -width 20   -height 20  -ParentObject $tpUnpaidDebtors -Text ">" -Script $sbUnpaidDebtorsChangeYearAdd | Out-null
                                                         New-Formbutton  -x 140 -y 1 -width 200  -height 20  -ParentObject $tpUnpaidDebtors -Script $sbUnpaidDebtorsRefresh -Text "Refresh" | Out-null
-[System.Windows.Forms.ListView]$lvUnpaidDebtors =       New-Formlistview -x 1  -y 25 -width 977 -height 709 -ParentObject $tpUnpaidDebtors -view "Details"
+[System.Windows.Forms.ListView]$lvUnpaidDebtors =       New-Formlistview -x 1  -y 25 -width 977 -height 709 -ParentObject $tpUnpaidDebtors -view "Details" -onclickscript $sbUnpaidDebtorsEdit
                                                         Add-ListviewColumn -oListView $lvUnpaidDebtors  -Text "entryid"        -Hide       -Silence
                                                         Add-ListviewColumn -oListView $lvUnpaidDebtors  -Text "number"         -Width 75   -Silence
                                                         Add-ListviewColumn -oListView $lvUnpaidDebtors  -Text "issuedate"      -Width 100  -Silence

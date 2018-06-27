@@ -90,6 +90,65 @@ param (
     return $PostXML
 }
 
+Function Get-Contacts
+{
+param (
+    [Parameter(Mandatory=$true)]$AcumulusAuthentication,
+    [Parameter(Mandatory=$false)][ValidateSet("Debiteur", "Crediteur" ,"Relatie")][string]$contacttype,
+    [Parameter(Mandatory=$false)][ValidateSet("Disabled", "Active" ,"All")][string]$contactstatus = "All",
+    [Parameter(Mandatory=$false)][string]$filter,
+    [Parameter(Mandatory=$false)][string]$offset,
+    [Parameter(Mandatory=$false)][string]$rowcount
+)
+    [String]$contactstatustemp = ""
+    [String]$contacttypetemp = ""
+    [xml]$SubmitXML = Get-BasicSubmit -AcumulusAuthentication $AcumulusAuthentication
+    if ($contacttype) {
+        switch ($contacttype){
+            "Debiteur" {
+                $contacttypetemp = "1"
+            }
+            "Crediteur" {
+                $contacttypetemp = "2"
+            }
+            "Relatie" {
+                $contacttypetemp = "3"
+            }
+        }
+    }
+    if ($contactstatus) {
+        switch ($contactstatus){
+            "Disabled" {
+                $contactstatustemp = "0"
+            }
+            "Active" {
+                $contactstatustemp = "1"
+            }
+            "All" {
+                $contactstatustemp = "2"
+            }
+        }
+    }
+    $NewXMLElement = $SubmitXML.CreateElement('contacttype')
+    $SubmitXML.myxml.AppendChild($NewXMLElement) | out-null
+    $SubmitXML.myxml.contacttype = $contacttypetemp
+    $NewXMLElement = $SubmitXML.CreateElement('contactstatus')
+    $SubmitXML.myxml.AppendChild($NewXMLElement) | out-null
+    $SubmitXML.myxml.contactstatus = $contactstatustemp
+    $NewXMLElement = $SubmitXML.CreateElement('filter')
+    $SubmitXML.myxml.AppendChild($NewXMLElement) | out-null
+    $SubmitXML.myxml.filter = $filter
+    $NewXMLElement = $SubmitXML.CreateElement('offset')
+    $SubmitXML.myxml.AppendChild($NewXMLElement) | out-null
+    $SubmitXML.myxml.offset = $offset
+    $NewXMLElement = $SubmitXML.CreateElement('rowcount')
+    $SubmitXML.myxml.AppendChild($NewXMLElement) | out-null
+    $SubmitXML.myxml.rowcount = $rowcount
+    $Response = Invoke-WebRequest 'https://api.sielsystems.nl/acumulus/stable/contacts/contacts_list.php' -Body "xmlstring=$($SubmitXML.InnerXml)" -Method 'POST' 
+    $Response = $Response | ConvertFrom-Json
+    return $Response.contacts.contact
+}
+
 Function Get-Entry
 {
 param (
@@ -113,7 +172,40 @@ param (
     [xml]$SubmitXML = Get-BasicSubmit -AcumulusAuthentication $AcumulusAuthentication
     $Response = Invoke-WebRequest 'https://api.sielsystems.nl/acumulus/stable/picklists/picklist_accounts.php' -Body "xmlstring=$($SubmitXML.InnerXml)" -Method 'POST' 
     $Response = $Response | ConvertFrom-Json
-    return $Response.accounts
+    return $Response.accounts.account
+}
+
+Function Get-PicklistCostcenters
+{
+param (
+    [Parameter(Mandatory=$true)]$AcumulusAuthentication
+)
+    [xml]$SubmitXML = Get-BasicSubmit -AcumulusAuthentication $AcumulusAuthentication
+    $Response = Invoke-WebRequest 'https://api.sielsystems.nl/acumulus/stable/picklists/picklist_costcenters.php' -Body "xmlstring=$($SubmitXML.InnerXml)" -Method 'POST' 
+    $Response = $Response | ConvertFrom-Json
+    return $Response.costcenters.costcenter
+}
+
+Function Get-PicklistCostheadings
+{
+param (
+    [Parameter(Mandatory=$true)]$AcumulusAuthentication
+)
+    [xml]$SubmitXML = Get-BasicSubmit -AcumulusAuthentication $AcumulusAuthentication
+    $Response = Invoke-WebRequest 'https://api.sielsystems.nl/acumulus/stable/picklists/picklist_costheadings.php' -Body "xmlstring=$($SubmitXML.InnerXml)" -Method 'POST' 
+    $Response = $Response | ConvertFrom-Json
+    return $Response.costheadings.costheading
+}
+
+Function Get-PicklistInvoicetemplates
+{
+param (
+    [Parameter(Mandatory=$true)]$AcumulusAuthentication
+)
+    [xml]$SubmitXML = Get-BasicSubmit -AcumulusAuthentication $AcumulusAuthentication
+    $Response = Invoke-WebRequest 'https://api.sielsystems.nl/acumulus/stable/picklists/picklist_invoicetemplates.php' -Body "xmlstring=$($SubmitXML.InnerXml)" -Method 'POST' 
+    $Response = $Response | ConvertFrom-Json
+    return $Response.invoicetemplates.invoicetemplate
 }
 
 Function Get-PicklistProducts

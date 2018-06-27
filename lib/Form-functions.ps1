@@ -354,6 +354,43 @@ param(  [parameter(Mandatory=$true)][System.Int32]$x,
     return $oNewDataGridView
 }
 
+function New-Formdatetimepicker {
+param(  [parameter(Mandatory=$true)][System.Int32]$x,
+        [parameter(Mandatory=$true)][System.Int32]$y,
+        [parameter(Mandatory=$true)][System.Int32]$width,
+        [parameter(Mandatory=$true)][System.Int32]$height,
+        [parameter(Mandatory=$true)]$ParentObject,
+        [parameter(Mandatory=$false)][Switch]$Disabled,
+        [parameter(Mandatory=$false)][DateTime]$MinDate,
+        [parameter(Mandatory=$false)][DateTime]$MaxDate,
+        [parameter(Mandatory=$false)][DateTime]$SelectDate,
+        [parameter(Mandatory=$false)][String]$AltText
+    )
+    [System.Windows.Forms.DateTimePicker]$oNewDateTimePicker = New-Object System.Windows.Forms.DateTimePicker
+    $oNewDateTimePicker.Location = New-Object System.Drawing.Size($x,$y)
+    $oNewDateTimePicker.Size = New-Object System.Drawing.Size($width,$height)
+    $ParentObject.Controls.Add($oNewDateTimePicker)
+    if ($Disabled)
+    {
+        $oNewDateTimePicker.Enabled = $False
+    }
+    if ($MinDate){
+        $oNewDateTimePicker.MinDate = $MinDate
+    }
+    if ($MaxDate){
+        $oNewDateTimePicker.MaxDate = $MaxDate
+    }
+    if ($SelectDate){
+        $oNewDateTimePicker.Value = $SelectDate 
+    }
+    if (!([System.string]::IsNullOrEmpty($AltText)))
+    {
+        [System.Windows.Forms.ToolTip] $Tooltip = New-Object System.Windows.Forms.ToolTip
+        $Tooltip.setToolTip($oNewDateTimePicker,$AltText)
+    }
+    return $oNewDateTimePicker
+}
+
 function New-Formlabel
 {
 param(  [parameter(Mandatory=$true)][System.Int32]$x,

@@ -22,3 +22,7 @@
         $lvUnpaidDebtors.Items.Add($lviUnpaidDebtoritem)                                            | Out-Null
     }  
 }
+
+[scriptblock]$sbUnpaidDebtorsEdit = {
+    entryEdit -iEntryId $lvUnpaidDebtors.SelectedItems.SubItems[0].Text
+}
