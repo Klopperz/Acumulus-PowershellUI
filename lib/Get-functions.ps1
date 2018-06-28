@@ -155,7 +155,7 @@ function Get-PhunQuote
         17 { $sReturn = "Chuck Norris lit a match and ended the Cold War." }
         18 { $sReturn = "Chuck Norris doesn't read books. He stares them down until he gets the information he wants." }
         19 { $sReturn = "Chuck Norris can light a fire by rubbing two ice-cubes together." }
-        20 { $sReturn = "Chuck Norris doesn’t wear a watch. HE decides what time it is." }
+        20 { $sReturn = "Chuck Norris doesnï¿½t wear a watch. HE decides what time it is." }
         21 { $sReturn = "When Chuck Norris does a pushup, he isn't lifting himself up, he's pushing the Earth down." }
         22 { $sReturn = "Chuck Norris will never have a heart attack. His heart isn't nearly foolish enough to attack him." }
         23 { $sReturn = "Chuck Norris doesn't flush the toilet, he scares the sh*t out of it" }
@@ -196,4 +196,35 @@ Param(  [parameter(Mandatory=$true)][Alias("Message", "body")][System.String]$sM
     Return [Microsoft.VisualBasic.Interaction]::InputBox($sMessage, $sTitle) 
 
 }
+
+Function Get-SaveFileLocation {
+    <#
+        .SYNOPSIS
+            Function:Get-SaveFileLocation
+    
+        .DESCRIPTION
+            Get a file location from the user
+    
+        .PARAMETER initialDirectory
+            - Alias = cd, Dir, Directory
+            [Optional]
+            The directory where to start the Users seach for that one magical place.
+            
+        .PARAMETER filter
+            [Optional]
+            The filter the user can use to save the file. for example: "Text files (*.txt)|*.txt|All files (*.*)|*.*""
+    #>
+    Param(  [parameter(Mandatory=$false)][Alias("cd", "Dir", "Directory")][System.String]$initialDirectory,
+            [parameter(Mandatory=$false)][System.String]$filter
+    )
+        $SaveChooser = New-Object -TypeName System.Windows.Forms.SaveFileDialog
+        if ($initialDirectory) {
+            $SaveChooser.initialDirectory = $initialDirectory
+        }
+        if ($filter) {
+            $SaveChooser.filter = $filter
+        }
+        $SaveChooser.ShowDialog() | Out-Null
+        return $SaveChooser.Filename
+    }
 

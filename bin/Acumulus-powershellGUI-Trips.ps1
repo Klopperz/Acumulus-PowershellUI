@@ -46,13 +46,36 @@
 [scriptblock]$sbTripRefresh = {
     $lvTrips.Items.Clear()
     $acTrips = Get-ReportTripCompensations -AcumulusAuthentication $authAcumulus -year $($txtTripYear.Text)
+    $acPicklistCostCenters = (Get-PicklistCostcenters -AcumulusAuthentication $authAcumulus)
     foreach($acTrip in $acTrips) {
         $lviTripitem = New-Object System.Windows.Forms.ListViewItem($acTrip.entryid)
-        $lviTripitem.SubItems.Add([Convert]::toString($acTrip.tripcompensationdate))         | Out-Null
-        $lviTripitem.SubItems.Add([Convert]::toString($acTrip.tripcompensationkm))           | Out-Null
-        $lviTripitem.SubItems.Add([Convert]::toString($acTrip.tripcompensationamount))       | Out-Null
-        $lviTripitem.SubItems.Add([Convert]::toString($acTrip.tripcompensationdescription))  | Out-Null
-        $lvTrips.Items.Add($lviTripitem)                                                     | Out-Null
+        $lviTripitem.SubItems.Add([Convert]::toString($acTrip.tripcompensationdate))                | Out-Null
+        $lviTripitem.SubItems.Add([Convert]::toString($acTrip.tripcompensationkm))                  | Out-Null
+        $lviTripitem.SubItems.Add([Convert]::toString($acTrip.tripcompensationamount))              | Out-Null
+
+        Foreach ($acPicklistCostCenter in $acPicklistCostCenters) {
+            if ($acPicklistCostCenter.costcenterid -eq $acTrip.tripcompensationcostcenterid){
+                $lviTripitem.SubItems.Add([Convert]::toString($acPicklistCostCenter.costcentername)) | Out-Null
+            }
+        }
+
+        $lviTripitem.SubItems.Add([Convert]::toString($acTrip.tripcompensationdescription))         | Out-Null
+        $lvTrips.Items.Add($lviTripitem)                                                            | Out-Null
     }      
 }
 
+[scriptblock]$sbTripsExport  = {
+    [System.String]$SaveTo = Get-SaveFileLocation -filter "Comma separated file (*.csv)|*.csv|All files (*.*)|*.*"
+    Write-Verbose "Save to: $SaveTo"
+    $acTrips = Get-ReportTripCompensations -AcumulusAuthentication $authAcumulus -year $($txtTripYear.Text)
+    $acPicklistCostCenters = (Get-PicklistCostcenters -AcumulusAuthentication $authAcumulus)
+    foreach ($acTrip in $acTrips){
+        $acTrip.PSObject.Properties.Remove('entryid')
+        Foreach ($acPicklistCostCenter in $acPicklistCostCenters) {
+            if ($acPicklistCostCenter.costcenterid -eq $acTrip.tripcompensationcostcenterid){
+                $acTrip.tripcompensationcostcenterid = $acPicklistCostCenter.costcentername
+            }
+        }
+    }
+    $acTrips | ConvertTo-Csv -NoTypeInformation | Set-Content $SaveTo
+}

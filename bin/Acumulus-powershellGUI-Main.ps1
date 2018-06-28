@@ -57,13 +57,15 @@ New-Formbutton  -x 1 -y 1 -width 200  -height 20  -ParentObject $tpExpense -Scri
                                                 New-Formbutton  -x 1   -y 1 -width 20   -height 20  -ParentObject $tpTrips  -Text "<" -Script $sbTripChangeYearRemove | Out-null
 [System.Windows.Forms.textbox]$txtTripYear =    New-Formtextbox -x 20  -y 1 -width 95   -height 20  -ParentObject $tpTrips  -Text $((get-date).ToString("yyyy")) -Disabled
                                                 New-Formbutton  -x 115 -y 1 -width 20   -height 20  -ParentObject $tpTrips  -Text ">" -Script $sbTripChangeYearAdd | Out-null
-                                                New-Formbutton  -x 140 -y 1 -width 200  -height 20  -ParentObject $tpTrips  -Script $sbTripRefresh -Text "Refresh" | Out-null
-                                                New-Formbutton  -x 342 -y 1 -width 200  -height 20  -ParentObject $tpTrips  -Script $sbTripAdd -Text "Add trip" | Out-null
+                                                New-Formbutton  -x 140 -y 1 -width 200  -height 20  -ParentObject $tpTrips  -Script $sbTripRefresh  -Text "Refresh" | Out-null
+                                                New-Formbutton  -x 342 -y 1 -width 200  -height 20  -ParentObject $tpTrips  -Script $sbTripAdd      -Text "Add trip" | Out-null
+                                                New-Formbutton  -x 544 -y 1 -width 200  -height 20  -ParentObject $tpTrips  -Script $sbTripsExport  -Text "Export list" | Out-null
 [System.Windows.Forms.ListView]$lvTrips =       New-Formlistview -x 1  -y 25 -width 977 -height 709 -ParentObject $tpTrips  -view "Details" -onclickscript $sbTripEdit
                                                 Add-ListviewColumn -oListView $lvTrips  -Text "entryid"     -Hide           -Silence
                                                 Add-ListviewColumn -oListView $lvTrips  -Text "date"        -Width 100      -Silence
                                                 Add-ListviewColumn -oListView $lvTrips  -Text "km"                          -Silence
                                                 Add-ListviewColumn -oListView $lvTrips  -Text "Amount"                      -Silence
+                                                Add-ListviewColumn -oListView $lvTrips  -Text "Costcenter"  -Width 100      -Silence
                                                 Add-ListviewColumn -oListView $lvTrips  -Text "description" -Width 600      -Silence
 
 
